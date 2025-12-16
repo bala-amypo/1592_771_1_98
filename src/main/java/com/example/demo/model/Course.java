@@ -47,16 +47,23 @@ public class Course {
         return description;
     }
 
-    public void setId(int id)
+    public void setUser(User user)
     {
-        this.id=id;
+        this.user=user;
     }
-    public long getId()
+    public User getUser()
     {
         return id;
     }
 
-
+    public void setCategory(String category)
+    {
+        this.category=category;
+    }
+    public String getCategory()
+    {
+        return category;
+    }
 
     public void setCreatedAt(LocalDateTime createdAt)
     {
