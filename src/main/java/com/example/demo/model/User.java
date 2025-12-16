@@ -11,7 +11,7 @@ public class User {
 
     public User(){}
     
-    public User(long id,String fullName,String email,String password,String role,String preferredLearningStyle,LocalDateTime createdAt)
+    public User(String fullName,String email,String password,String role,String preferredLearningStyle,LocalDateTime createdAt)
     {
         this.fullName=fullName;
         this.email=email;
@@ -34,7 +34,7 @@ public class User {
     {
         this.fullName=fullName;
     }
-    public long getFullName()
+    public String getFullName()
     {
         return fullName;
     }
@@ -43,7 +43,7 @@ public class User {
     {
         this.email=email;
     }
-    public long getEmail()
+    public String getEmail()
     {
         return email;
     }
@@ -52,7 +52,7 @@ public class User {
     {
         this.password=password;
     }
-    public long getPassword()
+    public String getPassword()
     {
         return password;
     }
@@ -61,26 +61,26 @@ public class User {
     {
         this.role=role;
     }
-    public long getId()
+    public String getRole()
     {
-        return id;
+        return role;
     }
 
     public void setPreferredLearningStyle(String preferredLearningStyle)
     {
         this.preferredLearningStyle=preferredLearningStyle;
     }
-    public long getId()
+    public String getPreferredLearningStyle()
     {
-        return id;
+        return preferredLearningStyle;
     }
 
     public void setCreatedAt(LocalDateTime createdAt)
     {
         this.createdAt=createdAt;
     }
-    public long getId()
+    public LocalDateTime getCreatedAt()
     {
-        return id;
+        return createdAt;
     }
 }
