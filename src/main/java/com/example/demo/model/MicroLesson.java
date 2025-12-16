@@ -24,27 +24,30 @@ public class MicroLesson {
         this.publishDate=publishDate;
     }
 
-    public void setId()
+    public void setId(long id)
+    {
+        this.course=course;
+    }
     public long getId()
 
-    public void setCourse()
+    public void setCourse(Course course)
     public getCourse()
 
-    public void setTitle()
-    public getTitle
+    public void setTitle(String title)
+    public getTitle()
 
-    public void setDurationMinutes()
+    public void setDurationMinutes(Integer durationMinutes)
     public getDurationMinutes()
 
-    public void setC
-    public
+    public void setContentType()
+    public getContentType()
 
-    public void
-    public
+    public void setDifficulty()
+    public getDifficulty()
 
-    public void
-    public
+    public void setTags()
+    public getTags()
 
-    public void
-    public
+    public void setPublishDate()
+    public getPublishDate()
 }
