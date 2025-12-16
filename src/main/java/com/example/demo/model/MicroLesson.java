@@ -13,5 +13,9 @@ public class MicroLesson {
 
     public MicroLesson(){}
 
-    public 
+    public MicroLesson(Course course,String title,Integer durationMinutes,String contentType,String difficulty,String tags,LocalDate publishDate)
+    {
+        this.course=course;
+        tg
+    }
 }
