@@ -29,25 +29,31 @@ public class MicroLesson {
         this.course=course;
     }
     public long getId()
+    {
+        return
+    }
 
     public void setCourse(Course course)
+    {
+        
+    }
     public Course getCourse()
 
     public void setTitle(String title)
     public String getTitle()
 
     public void setDurationMinutes(Integer durationMinutes)
-    public getDurationMinutes()
+    public Integer getDurationMinutes()
 
     public void setContentType(String contentType)
-    public  getContentType()
+    public String getContentType()
 
     public void setDifficulty(String difficulty)
-    public getDifficulty()
+    public String getDifficulty()
 
     public void setTags(String tags)
-    public getTags()
+    public String getTags()
 
     public void setPublishDate(LocalDate publishDate)
-    public getPublishDate()
+    public LocalDate getPublishDate()
 }
