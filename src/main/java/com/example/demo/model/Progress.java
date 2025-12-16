@@ -48,18 +48,39 @@ public class Progress {
         return microLesson;
     }
 
-    public
-    public
+    public void setStatus(String status)
+    {
+        this.status=status;
+    }
+    public String getStatus()
+    {
+        return status;
+    }
 
-    public
-    public
+    public void setProgressPercent(Integer progressPercent)
+    {
+        this.progressPercent=progressPercent;
+    }
+    public Integer getProgressPercent()
+    {
+        return progressPercent;
+    }
 
-    public
-    public
+    public void setLastAccessedAt(LocalDateTime lastAccessedAt)
+    {
+        this.lastAccessedAt=lastAccessedAt;
+    }
+    public LocalDateTime getLastAccessedAt()
+    {
+        return lastAccessedAt;
+    }
 
-    public
-    public
-
-    public
-    public
+    public void setScore(Double score)
+    {
+        this.score=score;
+    }
+    public Double getScore()
+    {
+        return score;
+    }
 }
