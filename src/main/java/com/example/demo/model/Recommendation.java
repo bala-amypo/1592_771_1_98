@@ -19,27 +19,60 @@ public class Recommendation {
         this.confidenceScore=confidenceScore;
     }
 
-    public void setId()
+    public void setId(long id)
     {
         this.id=id;
     }
     public long getId()
-
-    public void setUser()
     {
-        
+        return id;
     }
-    public User getUser();
 
-    public void setGeneratedAt();
+    public void setUser(User user)
+    {
+        this.user=user;
+    }
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setGeneratedAt(LocalDateTime generatedAt)
+    {
+        this.generatedAt=generatedAt;
+
+    }
     public LocalDateTime getGeneratedAt()
+    {
+        return generatedAt;
+    }
 
-    public void setRecommendedLessonIds()
+    public void setRecommendedLessonIds(String recommendedLessonIds)
+    {
+        this.recommendedLessonIds=recommendedLessonIds;
+
+    }
     public String getRecommendedLessonIds()
+    {
+        return recommendedLessonIds;
+    }
 
-    public void setBasisSnapshot()
+    public void setBasisSnapshot(String basisSnapshot)
+    {
+        this.basisSnapshot=basisSnapshot;
+
+    }
     public String getBasisSnapshot()
+    {
+        return basisSnapshot;
+    }
 
-    public void setConfidenceScore()
+    public void setConfidenceScore(Double confidenceScore)
+    {
+        this.confidenceScore=confidenceScore;
+    }
     public Double getConfidenceScore()
+    {
+        return confidenceScore;
+    }
 }
