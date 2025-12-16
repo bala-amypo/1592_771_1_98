@@ -31,23 +31,23 @@ public class MicroLesson {
     public long getId()
 
     public void setCourse(Course course)
-    public getCourse()
+    public Course getCourse()
 
     public void setTitle(String title)
-    public getTitle()
+    public String getTitle()
 
     public void setDurationMinutes(Integer durationMinutes)
     public getDurationMinutes()
 
-    public void setContentType()
-    public getContentType()
+    public void setContentType(String contentType)
+    public  getContentType()
 
-    public void setDifficulty()
+    public void setDifficulty(String difficulty)
     public getDifficulty()
 
-    public void setTags()
+    public void setTags(String tags)
     public getTags()
 
-    public void setPublishDate()
+    public void setPublishDate(LocalDate publishDate)
     public getPublishDate()
 }
