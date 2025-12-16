@@ -30,29 +30,57 @@ public class User {
         return id;
     }
     
-    public void getName(String fullName)
+    public void setFullName(String fullName)
     {
         this.fullName=fullName;
     }
-    public void getName(String fullName)
+    public long getFullName()
     {
-        this.fullName=fullName;
-    }
-    public void getName(String fullName)
-    {
-        this.fullName=fullName;
-    }
-    public void getName(String fullName)
-    {
-        this.fullName=fullName;
-    }
-    public void getName(String fullName)
-    {
-        this.fullName=fullName;
-    }
-    public void getName(String fullName)
-    {
-        this.fullName=fullName;
+        return fullName;
     }
 
+    public void setEmail(String email)
+    {
+        this.email=email;
+    }
+    public long getEmail()
+    {
+        return email;
+    }
+
+    public void setPassword(String password)
+    {
+        this.password=password;
+    }
+    public long getPassword()
+    {
+        return password;
+    }
+
+    public void setRole(String role)
+    {
+        this.role=role;
+    }
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setPreferredLearningStyle(String preferredLearningStyle)
+    {
+        this.preferredLearningStyle=preferredLearningStyle;
+    }
+    public long getId()
+    {
+        return id;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt)
+    {
+        this.createdAt=createdAt;
+    }
+    public long getId()
+    {
+        return id;
+    }
 }
