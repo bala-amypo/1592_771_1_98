@@ -26,7 +26,7 @@ public class MicroLesson {
 
     public void setId(long id)
     {
-        this.course=course;
+        this.id=id;
     }
     public long getId()
     {
