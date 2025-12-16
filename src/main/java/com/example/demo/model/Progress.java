@@ -10,4 +10,6 @@ public class Progress {
     private Double score;
     
     public Progress(){}
+
+    
 }
