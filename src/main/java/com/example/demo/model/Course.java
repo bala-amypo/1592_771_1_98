@@ -1,77 +1,89 @@
 package com.example.demo.model;
 
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Course {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     
-    private long id;
+    @Column(nullable = false,unique = true)
     private String title;
+
+    @Column(nullable = true)
     private String description;
-    private User user;
+
+    @Column(nullable = false)
+    private User instructor;
+
     private String category;
+
     private LocalDateTime createdAt;
 
     public Course(){}
 
-    public Course(String title,String description,User user,String Category,LocalDateTime createdAt)
-    {
-        this.title=title;
-        this.description=description;
-        this.user=user;
-        this.category=category;
-        this.createdAt=createdAt;
+    public Course(String title, String description, User instructor, String category, LocalDateTime createdAt) {
+        this.title = title;
+        this.description = description;
+        this.instructor = instructor;
+        this.category = category;
+        this.createdAt = createdAt;
     }
 
-    public void setId(int id)
-    {
-        this.id=id;
-    }
-    public long getId()
-    {
+    public Long getId() {
         return id;
     }
 
-    public void setTitle(String title)
-    {
-        this.title=title;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public String getTitle()
-    {
+
+    public String getTitle() {
         return title;
     }
 
-    public void setDescription(String description)
-    {
-        this.description=description;
+    public void setTitle(String title) {
+        this.title = title;
     }
-    public String getDescription()
-    {
+
+    public String getDescription() {
         return description;
     }
 
-    public void setUser(User user)
-    {
-        this.user=user;
-    }
-    public User getUser()
-    {
-        return id;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setCategory(String category)
-    {
-        this.category=category;
+    public User getInstructor() {
+        return instructor;
     }
-    public String getCategory()
-    {
+
+    public void setInstructor(User instructor) {
+        this.instructor = instructor;
+    }
+
+    public String getCategory() {
         return category;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt)
-    {
-        this.createdAt=createdAt;
+    public void setCategory(String category) {
+        this.category = category;
     }
-    public LocalDateTime getCreatedAt()
-    {
+
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    
 }
