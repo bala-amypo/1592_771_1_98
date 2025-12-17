@@ -7,9 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -17,9 +20,9 @@ public class User {
     private Long id;
 
     private String fullName;
-    
-    @Email
+
     @Column(unique = true)
+    @Email
     private String email;
 
     private String password;
@@ -28,10 +31,21 @@ public class User {
 
     @Column(nullable = true)
     private String preferredLearningStyle;
-    
+
     private LocalDateTime createdAt;
 
-    public User(){}
+    @PrePersist
+    protected void onCreate()
+    {
+        if(role==null)
+        {
+            role="LEARNER";
+        }
+        this.createdAt=LocalDateTime.now();
+    }
+    
+    public User() {
+    }
 
     public User(String fullName, String email, String password, String role, String preferredLearningStyle,
             LocalDateTime createdAt) {
@@ -98,5 +112,5 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-    
+
 }
