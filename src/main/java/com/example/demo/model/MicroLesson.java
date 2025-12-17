@@ -1,103 +1,110 @@
 package com.example.demo.model;
 
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+
+@Entity
 public class MicroLesson {
-    
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private Course course;
+
     private String title;
+    
+    @Min(value =  1)
+    @Max(value = 15)
     private Integer durationMinutes;
+
     private String contentType;
+
     private String difficulty;
+
     private String tags;
+    
     private LocalDate publishDate;
 
     public MicroLesson(){}
 
-    public MicroLesson(Course course,String title,Integer durationMinutes,String contentType,String difficulty,String tags,LocalDate publishDate)
-    {
-        this.course=course;
-        this.title=title;
-        this.durationMinutes=durationMinutes;
-        this.contentType=contentType;
-        this.difficulty=difficulty;
-        this.tags=tags;
-        this.publishDate=publishDate;
+    public MicroLesson(Course course, String title, Integer durationMinutes, String contentType, String difficulty,
+            String tags, LocalDate publishDate) {
+        this.course = course;
+        this.title = title;
+        this.durationMinutes = durationMinutes;
+        this.contentType = contentType;
+        this.difficulty = difficulty;
+        this.tags = tags;
+        this.publishDate = publishDate;
     }
 
-    public void setId(long id)
-    {
-        this.id=id;
-    }
-    public long getId()
-    {
+    public Long getId() {
         return id;
     }
 
-    public void setCourse(Course course)
-    {
-        this.course=course;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public Course getCourse()
-    {
+
+    public Course getCourse() {
         return course;
     }
 
-    public void setTitle(String title)
-    {
-        this.title=title;
-
+    public void setCourse(Course course) {
+        this.course = course;
     }
-    public String getTitle()
-    {
+
+    public String getTitle() {
         return title;
     }
 
-    public void setDurationMinutes(Integer durationMinutes)
-    {
-        this.durationMinutes=durationMinutes;
-
+    public void setTitle(String title) {
+        this.title = title;
     }
-    public Integer getDurationMinutes()
-    {
+
+    public Integer getDurationMinutes() {
         return durationMinutes;
     }
 
-    public void setContentType(String contentType)
-    {
-        this.contentType=contentType;
-
+    public void setDurationMinutes(Integer durationMinutes) {
+        this.durationMinutes = durationMinutes;
     }
-    public String getContentType()
-    {
+
+    public String getContentType() {
         return contentType;
     }
 
-    public void setDifficulty(String difficulty)
-    {
-        this.difficulty=difficulty;
-
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
-    public String getDifficulty()
-    {
+
+    public String getDifficulty() {
         return difficulty;
     }
 
-    public void setTags(String tags)
-    {
-        this.tags=tags;
-
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
-    public String getTags()
-    {
+
+    public String getTags() {
         return tags;
     }
 
-    public void setPublishDate(LocalDate publishDate)
-    {
-        this.publishDate=publishDate;
+    public void setTags(String tags) {
+        this.tags = tags;
     }
-    public LocalDate getPublishDate()
-    {
+
+    public LocalDate getPublishDate() {
         return publishDate;
+    }
+
+    public void setPublishDate(LocalDate publishDate) {
+        this.publishDate = publishDate;
     }
 }
