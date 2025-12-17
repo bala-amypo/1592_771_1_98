@@ -86,7 +86,4 @@ public class Recommendation {
     public void setConfidenceScore(Double confidenceScore) {
         this.confidenceScore = confidenceScore;
     }
-
-    
-
 }
