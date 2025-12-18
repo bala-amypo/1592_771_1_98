@@ -15,6 +15,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "progress")
@@ -26,12 +27,14 @@ public class Progress {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    @JsonIgnore 
+    @JsonIgnore
+    @NotNull
     private User user;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "microLessonId")
     @JsonIgnore
+    @NotNull
     private MicroLesson microLesson;
 
     private String status;

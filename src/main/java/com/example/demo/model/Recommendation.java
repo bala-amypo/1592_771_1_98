@@ -13,8 +13,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "recommendations")
@@ -27,6 +28,7 @@ public class Recommendation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     @JsonIgnore
+    @NotNull
     private User user;
 
     private LocalDateTime generatedAt;
@@ -35,8 +37,8 @@ public class Recommendation {
 
     private String basisSnapshot;
 
-    @Min(value = 0)
-    @Max(value = 1)
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "1.0")
     private Double confidenceScore;
 
     @PrePersist
@@ -103,6 +105,5 @@ public class Recommendation {
     public void setConfidenceScore(Double confidenceScore) {
         this.confidenceScore = confidenceScore;
     }
-
     
 }
