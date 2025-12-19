@@ -43,7 +43,7 @@ public class LessonController {
     }
 
     @GetMapping("/{lessonId}")
-    public ResponseEntity<MicroLesson> getLesson(@PathVariable Long lessonId)
+    public ResponseEntity<MicroLesson> getLesson(@PathVariable Long lssonId)
     {
         return ResponseEntity.ok(lessonService.getLesson(lessonId));
     }
