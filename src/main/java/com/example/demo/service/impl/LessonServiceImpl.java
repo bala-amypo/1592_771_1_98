@@ -1,45 +1,53 @@
+
 package com.example.demo.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entity.Course;
+import com.example.demo.entity.MicroLesson;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Course;
-import com.example.demo.model.MicroLesson;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.MicroLessonRepository;
 import com.example.demo.service.LessonService;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.ValidationException;
 
 @Service
-public class LessonServiceImpl implements LessonService{
-    
-    @Autowired
-    MicroLessonRepository microLessonRepository;
+@Transactional
+public class LessonServiceImpl implements LessonService {
 
-    @Autowired
-    CourseRepository courseRepository;
+    private final MicroLessonRepository microLessonRepository;
+    private final CourseRepository courseRepository;
 
-    public MicroLesson addLesson(Long courseId,MicroLesson lesson)
-    {
-        Course course=courseRepository.findById(courseId)
-        .orElseThrow(()-> new ResourceNotFoundException("Course not found with id:"+courseId));
+    private final List<String> allowedContentTypes = Arrays.asList("VIDEO", "ARTICLE", "QUIZ", "INTERACTIVE");
+    private final List<String> allowedDifficulties = Arrays.asList("BEGINNER", "INTERMEDIATE", "ADVANCED");
 
-        if(lesson.getDurationMinutes()==null || lesson.getDurationMinutes()<1 || lesson.getDurationMinutes()>15)
-        {
-            throw new ValidationException("Lesson duration must be between 1 and 15 minutes");
-        }
+    public LessonServiceImpl(MicroLessonRepository microLessonRepository, CourseRepository courseRepository) {
+        this.microLessonRepository = microLessonRepository;
+        this.courseRepository = courseRepository;
+    }
+
+    @Override
+    public MicroLesson addLesson(Long courseId, MicroLesson lesson) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found with id:" + courseId));
+
+        validateLesson(lesson);
 
         lesson.setCourse(course);
         return microLessonRepository.save(lesson);
     }
 
-    public MicroLesson updateLesson(Long lessonId,MicroLesson lesson){
-        MicroLesson existing=microLessonRepository.findById(lessonId)
-        .orElseThrow(()-> new ResourceNotFoundException("Lesson not found"));
+    @Override
+    public MicroLesson updateLesson(Long lessonId, MicroLesson lesson) {
+        MicroLesson existing = microLessonRepository.findById(lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found with id: " + lessonId));
+
+        validateLesson(lesson);
 
         existing.setTitle(lesson.getTitle());
         existing.setDurationMinutes(lesson.getDurationMinutes());
@@ -51,14 +59,27 @@ public class LessonServiceImpl implements LessonService{
         return microLessonRepository.save(existing);
     }
 
-    public List<MicroLesson> findLessonsByFilters(String tags,String difficulty,String contentType)
-    {
+    @Override
+    public List<MicroLesson> findLessonsByFilters(String tags, String difficulty, String contentType) {
         return microLessonRepository.findByFilters(tags, difficulty, contentType);
     }
 
-    public MicroLesson getLesson(Long lessonId)
-    {
+    @Override
+    public MicroLesson getLesson(Long lessonId) {
         return microLessonRepository.findById(lessonId)
-        .orElseThrow(()-> new ResourceNotFoundException("Lesson not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found with id: " + lessonId));
+    }
+
+    private void validateLesson(MicroLesson lesson) {
+        if (lesson.getDurationMinutes() == null || lesson.getDurationMinutes() < 1
+                || lesson.getDurationMinutes() > 15) {
+            throw new ValidationException("Lesson duration must be between 1 and 15 minutes");
+        }
+        if (!allowedContentTypes.contains(lesson.getContentType().toUpperCase())) {
+            throw new ValidationException("Content type must be one of: " + allowedContentTypes);
+        }
+        if (!allowedDifficulties.contains(lesson.getDifficulty().toUpperCase())) {
+            throw new ValidationException("Difficulty must be one of: " + allowedDifficulties);
+        }
     }
 }
