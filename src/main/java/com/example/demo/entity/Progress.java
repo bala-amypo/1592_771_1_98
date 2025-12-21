@@ -21,6 +21,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,24 +46,26 @@ public class Progress {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    @NotNull(message = "User must be provided")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "micro_lesson_id", nullable = false)
     @JsonIgnore
-    @NotNull(message = "MicroLesson must be provided")
     private MicroLesson microLesson;
 
-    @NotBlank
+    @NotBlank(message = "Status is required")
+    @Pattern(
+        regexp = "NOT_STARTED|IN_PROGRESS|COMPLETED",
+        message = "Status must be NOT_STARTED, IN_PROGRESS, or COMPLETED"
+    )
     @Builder.Default
     @Size(max = 20)
-    @Column(nullable = false)
+    @Column(nullable = false,length = 20)
     private String status = "NOT_STARTED";
 
-    @Min(value = 0)
-    @Max(value = 100)
-    @NotNull
+    @NotNull(message = "Progress percent is required")
+    @Min(value = 0, message = "Progress percent cannot be less than 0")
+    @Max(value = 100, message = "Progress percent cannot be more than 100")
     @Builder.Default
     @Column(nullable = false)
     private Integer progressPercent = 0;
@@ -133,4 +136,6 @@ public class Progress {
         return progressPercent;
     }
 }
+
+
 

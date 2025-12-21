@@ -41,24 +41,38 @@ public class Recommendation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    @NotNull
+    @NotNull(message = "User must be provided")
     private User user;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime generatedAt;
 
-    @NotBlank
-    @Size(max = 1000)
+    @NotBlank(message = "Recommended lesson IDs must not be blank")
+    @Size(
+        max = 1000,
+        message = "Recommended lesson IDs must not exceed 1000 characters"
+    )
     @Column(nullable = false, length = 1000)
     private String recommendedLessonIds;
 
-    @Size(max = 2000)
-    @Column(length = 2000,nullable = true)
+    @Size(
+        max = 2000,
+        message = "Basis snapshot must not exceed 2000 characters"
+    )
+    @Column(length = 2000, nullable = true)
     private String basisSnapshot;
 
-    @NotNull
-    @DecimalMin(value = "0.0")
-    @DecimalMax(value = "1.0")
+    @NotNull(message = "Confidence score is required")
+    @DecimalMin(
+        value = "0.0",
+        inclusive = true,
+        message = "Confidence score must be at least 0.0"
+    )
+    @DecimalMax(
+        value = "1.0",
+        inclusive = true,
+        message = "Confidence score must not exceed 1.0"
+    )
     @Column(precision = 3, scale = 2, nullable = false)
     private BigDecimal confidenceScore;
 
@@ -67,3 +81,5 @@ public class Recommendation {
         this.generatedAt = LocalDateTime.now();
     }
 }
+
+

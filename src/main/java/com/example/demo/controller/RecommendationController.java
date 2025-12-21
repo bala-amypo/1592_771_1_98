@@ -1,3 +1,4 @@
+
 package com.example.demo.controller;
 
 import java.time.LocalDateTime;
@@ -41,9 +42,15 @@ public class RecommendationController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Recommendation>> getRecommendations(@PathVariable Long userId,
+    public ResponseEntity<?> getRecommendations(@PathVariable Long userId,
             @RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
-        return ResponseEntity.ok(recommendationService.getRecommendations(userId, from, to));
+                List<Recommendation> recommendations=recommendationService.getRecommendations(userId, from, to);
+                if(recommendations.isEmpty())
+                {
+                    return ResponseEntity.status(404).body("No recommendations found for user "+userId+" in the given data range");
+                }
+        return ResponseEntity.ok(recommendations);
     }
 
 }
+

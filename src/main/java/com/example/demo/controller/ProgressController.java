@@ -42,8 +42,14 @@ public class ProgressController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Progress>> getUserProgress(@PathVariable Long userId) {
+    public ResponseEntity<?> getUserProgress(@PathVariable Long userId) {
         List<Progress> progressList = progressService.getUserProgress(userId);
+        if (progressList.isEmpty()) {
+
+            return ResponseEntity.status(404)
+                    .body("No progress found for user with id: " + userId);
+
+        }
         return ResponseEntity.ok(progressList);
     }
 }
