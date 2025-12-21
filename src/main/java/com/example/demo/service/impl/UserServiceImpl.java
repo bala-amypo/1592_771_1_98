@@ -60,4 +60,3 @@ public class UserServiceImpl implements UserService {
         return optionalUser.orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
     }
 }
-

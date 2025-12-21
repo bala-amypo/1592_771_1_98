@@ -18,6 +18,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,27 +38,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "Full name is required")
+    @Size(max = 100, message = "Full name must not exceed 100 characters")
     private String fullName;
 
     @Column(unique = true, nullable = false)
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
 
     @Column(nullable = false)
-    @NotBlank
-    @Size(min = 8)
+    @NotBlank(message = "Password is required")
+    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
     @Column(nullable = false)
     @Builder.Default
-    @NotBlank
+    @NotBlank(message = "Role is required")
+    @Pattern(regexp = "LEARNER|INSTRUCTOR|ADMIN", message = "Role must be LEARNER, INSTRUCTOR, or ADMIN")
     private String role = "LEARNER";
 
     @Column(nullable = true)
-    @Size(max = 50)
+    @Size(max = 50, message = "Preferred learning style max 50 characters")
     private String preferredLearningStyle;
 
     private LocalDateTime createdAt;
