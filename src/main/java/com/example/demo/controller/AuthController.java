@@ -31,7 +31,7 @@ public class AuthController {
         return ResponseEntity.status(201).body(u);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login/{email}/{password}")
     public ResponseEntity<User> login(@PathVariable String email,@PathVariable String password) {
         User u = userService.login(email,password);
         return ResponseEntity.status(201).body(u);
