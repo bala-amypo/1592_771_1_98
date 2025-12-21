@@ -40,12 +40,12 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 150)
+    @NotBlank(message = "Course title is required")
+    @Size(max = 150, message = "Course title must not exceed 150 characters")
     @Column(nullable = false)
     private String title;
 
-    @Size(max = 500)
+    @Size(max = 500, message = "Description must not exceed 500 characters")
     @Column(nullable = true)
     private String description;
 
@@ -54,9 +54,9 @@ public class Course {
     @JsonIgnore
     private User instructor;
 
-    @NotBlank
-    @Size(max = 50)
     @Column(nullable = false)
+    @NotBlank(message = "Category is required")
+    @Size(max = 50, message = "Category must not exceed 50 characters")
     private String category;
 
     @Column(nullable = false, updatable = false)

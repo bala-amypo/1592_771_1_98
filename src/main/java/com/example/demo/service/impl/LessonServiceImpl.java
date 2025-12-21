@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Course;
 import com.example.demo.entity.MicroLesson;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.MicroLessonRepository;
 import com.example.demo.service.LessonService;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.ValidationException;
 
 @Service
 @Transactional
@@ -61,11 +61,22 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public List<MicroLesson> findLessonsByFilters(String tags, String difficulty, String contentType) {
+        if (difficulty != null && !allowedDifficulties.contains(difficulty.toUpperCase())) {
+            throw new ValidationException("Difficulty must be one of: " + allowedDifficulties);
+        }
+
+        // Validate content type
+        if (contentType != null && !allowedContentTypes.contains(contentType.toUpperCase())) {
+            throw new ValidationException("Content type must be one of: " + allowedContentTypes);
+        }
+
         return microLessonRepository.findByFilters(tags, difficulty, contentType);
+
     }
 
     @Override
     public MicroLesson getLesson(Long lessonId) {
+
         return microLessonRepository.findById(lessonId)
                 .orElseThrow(() -> new ResourceNotFoundException("Lesson not found with id: " + lessonId));
     }
@@ -83,3 +94,4 @@ public class LessonServiceImpl implements LessonService {
         }
     }
 }
+

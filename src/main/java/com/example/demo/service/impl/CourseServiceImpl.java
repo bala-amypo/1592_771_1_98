@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Course;
 import com.example.demo.entity.User;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.CourseRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.CourseService;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.ValidationException;
 
 @Service
 @Transactional
@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
         User instructor = userRepository.findById(instructorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Instructor not found with id " + instructorId));
 
-        if (!instructor.getRole().equals("INSTRUCTOR") && !instructor.getRole().equals("ADMIN")) {
+        if (!instructor.getRole().equalsIgnoreCase("INSTRUCTOR") && !instructor.getRole().equalsIgnoreCase("ADMIN")) {
             throw new ValidationException("Only INSTRUCTOR or ADMIN create courses");
         }
         boolean exists = courseRepository.existsByTitleAndInstructorId(course.getTitle(), instructorId);
@@ -68,12 +68,20 @@ public class CourseServiceImpl implements CourseService {
     public Course getCourse(Long courseId) {
         return courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with id:" + courseId));
+
+
     }
 
     @Override
     public List<Course> listCoursesByInstructor(Long instructorId) {
+        User instructor  = userRepository.findById(instructorId)
+        .orElseThrow(()-> new ResourceNotFoundException("User not found with id "+instructorId));
+
+        
+        if (!instructor.getRole().equalsIgnoreCase("INSTRUCTOR") &&
+            !instructor.getRole().equalsIgnoreCase("ADMIN")) {
+            throw new ValidationException("User with id " + instructorId + " is not an instructor or admin");
+        }
         return courseRepository.findByInstructorId(instructorId);
     }
 }
-
-

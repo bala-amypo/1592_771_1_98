@@ -2,6 +2,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,8 +50,16 @@ public class CourseController {
     }
 
     @GetMapping("/instructor/{instructorId}")
-    public ResponseEntity<List<Course>> getCourseByInstructor(@PathVariable Long instructorId) {
+    public ResponseEntity<?> getCourseByInstructor(@PathVariable Long instructorId) {
+        
         List<Course> courses = courseService.listCoursesByInstructor(instructorId);
+        if (courses.isEmpty()) {
+            return ResponseEntity.ok(Map.of(
+                    "message", "Instructor exists but has no courses yet",
+                    "instructorId", instructorId,
+                    "courses", courses
+            ));
+        }
         return ResponseEntity.status(200).body(courses);
     }
 }

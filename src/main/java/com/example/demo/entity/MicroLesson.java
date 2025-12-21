@@ -21,6 +21,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -44,36 +45,37 @@ public class MicroLesson {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "course_id", nullable = false)
     @JsonIgnore
-    @NotNull(message = "Course must be provided")
     private Course course;
 
-    @NotBlank
-    @Size(max = 150)
-    @Column(nullable = false)
+    @NotBlank(message = "Lesson title is required")
+    @Size(max = 150, message = "Title must be at most 150 characters")
+    @Column(nullable = false, length = 150)
     private String title;
 
-    @NotNull
     @Positive
-    @Min(value = 1)
-    @Max(value = 15)
+    @NotNull(message = "Duration is required")
+    @Min(value = 1, message = "Duration must be at least 1 minute")
+    @Max(value = 15, message = "Duration must not exceed 15 minutes")
     @Column(nullable = false)
     private Integer durationMinutes;
 
-    @NotBlank
+    @NotBlank(message = "Content type is required")
+    @Pattern(regexp = "VIDEO|ARTICLE|QUIZ|INTERACTIVE", message = "Content type must be VIDEO, ARTICLE, QUIZ, or INTERACTIVE")
     @Size(max = 50)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String contentType;
 
-    @NotBlank
+    @NotBlank(message = "Difficulty is required")
+    @Pattern(regexp = "BEGINNER|INTERMEDIATE|ADVANCED", message = "Difficulty must be BEGINNER, INTERMEDIATE, or ADVANCED")
     @Size(max = 50)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String difficulty;
 
-    @Size(max = 500)
-    @Column(nullable = true)
+    @Size(max = 500, message = "Tags must be at most 500 characters")
+    @Column(nullable = true, length = 500)
     private String tags;
 
-    @NotNull
+    @NotNull(message = "Publish date is required")
     private LocalDate publishDate;
 
     @OneToMany(mappedBy = "microLesson", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -81,6 +83,4 @@ public class MicroLesson {
     @Builder.Default
     private List<Progress> progresses = new ArrayList<>();
 }
-
-
 

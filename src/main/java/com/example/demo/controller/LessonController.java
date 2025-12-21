@@ -1,4 +1,5 @@
 
+
 package com.example.demo.controller;
 
 import java.util.List;
@@ -43,10 +44,15 @@ public class LessonController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<MicroLesson>> searchLessons(@RequestParam(required = false) String tags,
+    public ResponseEntity<?> searchLessons(@RequestParam(required = false) String tags,
             @RequestParam(required = false) String difficulty, @RequestParam(required = false) String contentType) {
-        return ResponseEntity.ok(lessonService.findLessonsByFilters(tags, difficulty, contentType));
+        List<MicroLesson> lessons = lessonService.findLessonsByFilters(tags, difficulty, contentType);
+        if (lessons.isEmpty()) {
+            return ResponseEntity.status(404)
+                    .body("No lessons found for the given filters");
+        }
 
+        return ResponseEntity.ok(lessons);
     }
 
     @GetMapping("/{lessonId}")
@@ -54,3 +60,5 @@ public class LessonController {
         return ResponseEntity.ok(lessonService.getLesson(lessonId));
     }
 }
+
+
