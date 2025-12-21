@@ -6,10 +6,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.Progress;
+import com.example.demo.entity.Progress;
 
 @Repository
-public interface ProgressRepository extends JpaRepository<Progress,Long> {
-    Optional<Progress> findByUserIdAndMicroLessonId(Long userId,Long lessonId);
+public interface ProgressRepository extends JpaRepository<Progress, Long> {
+    Optional<Progress> findByUserIdAndMicroLessonId(Long userId, Long lessonId);
+
     List<Progress> findByUserIdOrderByLastAccessedAtDesc(Long userId);
 }
