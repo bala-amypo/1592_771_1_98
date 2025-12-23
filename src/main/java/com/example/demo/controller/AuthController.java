@@ -38,22 +38,27 @@
 
 // }
 
+
+
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.model.User;
-import com.example.demo.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+
+import com.example.demo.model.User;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.service.impl.UserServiceImpl;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final UserServiceImpl service;
 
-    public AuthController(UserServiceImpl s) {
-        this.service = s;
+    @Autowired
+    public AuthController(UserServiceImpl service) {
+        this.service = service;
     }
 
     @PostMapping("/register")
@@ -67,5 +72,4 @@ public class AuthController {
         User user = service.login(req.getEmail(), req.getPassword());
         return ResponseEntity.ok(user);
     }
-
 }
