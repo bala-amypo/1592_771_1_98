@@ -1,15 +1,15 @@
-package com.example.demo.service;
+// package com.example.demo.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+// import java.time.LocalDateTime;
+// import java.util.List;
 
-import com.example.demo.entity.Recommendation;
+// import com.example.demo.entity.Recommendation;
 
-public interface RecommendationService {
+// public interface RecommendationService {
 
-    Recommendation generateRecommendation(Long userId, Recommendation recommendation);
+//     Recommendation generateRecommendation(Long userId, Recommendation recommendation);
 
-    Recommendation getLastRecommendation(Long userId);
+//     Recommendation getLastRecommendation(Long userId);
 
-    List<Recommendation> getRecommendations(Long userId, LocalDateTime from, LocalDateTime to);
-}
+//     List<Recommendation> getRecommendations(Long userId, LocalDateTime from, LocalDateTime to);
+// }
