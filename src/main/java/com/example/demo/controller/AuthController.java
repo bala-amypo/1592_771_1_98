@@ -57,12 +57,15 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return service.register(user);
+    public ResponseEntity<?> register(@RequestBody User user) {
+        User newUser = service.register(user);
+        return ResponseEntity.ok(newUser);
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest req) {
-        return service.login(req.getEmail(), req.getPassword());
+    public ResponseEntity<?> login(@RequestBody AuthRequest req) {
+        User user = service.login(req.getEmail(), req.getPassword());
+        return ResponseEntity.ok(user);
     }
+
 }

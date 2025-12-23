@@ -60,27 +60,40 @@
 //     }
 // }
 
+
+
+
+package com.example.demo.service.impl;
+
+import org.springframework.stereotype.Service;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import java.util.Optional;
+
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl {
+
     private final UserRepository repo;
 
     public UserServiceImpl(UserRepository repo) {
         this.repo = repo;
     }
 
-    @Override
+    // Register a new user
     public User register(User user) {
+        if(repo.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
         return repo.save(user);
     }
 
-    @Override
-    public String login(String email, String password) {
+    // Login user
+    public User login(String email, String password) {
         User user = repo.findByEmail(email)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
-        if(user.getPassword().equals(password)) {
-            return "Login Successful";
-        } else {
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if(!user.getPassword().equals(password)) {
             throw new RuntimeException("Invalid password");
         }
+        return user;
     }
 }
