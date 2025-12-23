@@ -78,6 +78,9 @@ import com.example.demo.repository.MicroLessonRepository;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class RecommendationServiceImpl {
 
     private final RecommendationRepository repo;
