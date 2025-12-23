@@ -1,16 +1,16 @@
-// package com.example.demo.service;
+package com.example.demo.service;
 
-// import java.util.List;
+import java.util.List;
 
-// import com.example.demo.entity.Course;
+import com.example.demo.entity.Course;
 
-// public interface CourseService {
+public interface CourseService {
 
-//     Course createCourse(Course course, Long instructorId);
+    Course createCourse(Course course, Long instructorId);
 
-//     Course updateCourse(Long courseId, Course course);
+    Course updateCourse(Long courseId, Course course);
 
-//     Course getCourse(Long courseId);
+    Course getCourse(Long courseId);
 
-//     List<Course> listCoursesByInstructor(Long instructorId);
-// }
+    List<Course> listCoursesByInstructor(Long instructorId);
+}
