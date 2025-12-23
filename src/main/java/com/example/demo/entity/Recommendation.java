@@ -41,7 +41,6 @@ public class Recommendation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    @NotNull(message = "User must be provided")
     private User user;
 
     @Column(nullable = false, updatable = false)
