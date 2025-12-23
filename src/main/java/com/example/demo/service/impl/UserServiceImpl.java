@@ -60,44 +60,27 @@
 //     }
 // }
 
-
-
-package com.example.demo.service.impl;
-
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.security.JwtUtil;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.HashMap;
-
-public class UserServiceImpl {
-
+@Service
+public class UserServiceImpl implements UserService {
     private final UserRepository repo;
-    private final BCryptPasswordEncoder encoder;
-    private final JwtUtil jwtUtil;
 
-    public UserServiceImpl(UserRepository r, BCryptPasswordEncoder e, JwtUtil j) {
-        this.repo = r;
-        this.encoder = e;
-        this.jwtUtil = j;
+    public UserServiceImpl(UserRepository repo) {
+        this.repo = repo;
     }
 
+    @Override
     public User register(User user) {
-        if (user == null) throw new RuntimeException();
-        if (repo.existsByEmail(user.getEmail())) throw new RuntimeException();
-        user.setPassword(encoder.encode(user.getPassword()));
         return repo.save(user);
     }
 
-    public AuthResponse login(String email, String password) {
-        User u = repo.findByEmail(email).orElseThrow(RuntimeException::new);
-        if (!encoder.matches(password, u.getPassword())) throw new RuntimeException();
-        return new AuthResponse(jwtUtil.generateToken(new HashMap<>(), email));
-    }
-
-    public User findByEmail(String email) {
-        return repo.findByEmail(email).orElse(null);
+    @Override
+    public String login(String email, String password) {
+        User user = repo.findByEmail(email)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+        if(user.getPassword().equals(password)) {
+            return "Login Successful";
+        } else {
+            throw new RuntimeException("Invalid password");
+        }
     }
 }
