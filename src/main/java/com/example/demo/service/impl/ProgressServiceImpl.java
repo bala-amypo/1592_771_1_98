@@ -1,21 +1,111 @@
+// package com.example.demo.service.impl;
+
+// import java.time.LocalDateTime;
+// import java.util.List;
+// import java.util.Optional;
+
+// import org.springframework.stereotype.Service;
+
+// import com.example.demo.entity.MicroLesson;
+// import com.example.demo.entity.Progress;
+// import com.example.demo.entity.User;
+// import com.example.demo.exception.ResourceNotFoundException;
+// import com.example.demo.repository.MicroLessonRepository;
+// import com.example.demo.repository.ProgressRepository;
+// import com.example.demo.repository.UserRepository;
+// import com.example.demo.service.ProgressService;
+
+// import jakarta.transaction.Transactional;
+
+// @Service
+// @Transactional
+// public class ProgressServiceImpl implements ProgressService {
+
+//     private final ProgressRepository progressRepository;
+//     private final UserRepository userRepository;
+//     private final MicroLessonRepository microLessonRepository;
+
+//     public ProgressServiceImpl(ProgressRepository progressRepository, UserRepository userRepository,
+//             MicroLessonRepository microLessonRepository) {
+//         this.progressRepository = progressRepository;
+//         this.userRepository = userRepository;
+//         this.microLessonRepository = microLessonRepository;
+//     }
+
+//     @Override
+//     public Progress recordProgress(Long userId, Long lessonId, Progress progress) {
+//         User user = userRepository.findById(userId)
+//                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id:" + userId));
+
+//         MicroLesson lesson = microLessonRepository.findById(lessonId)
+//                 .orElseThrow(() -> new ResourceNotFoundException("Lesson not found with id:" + lessonId));
+
+//         if (progress.getProgressPercent() < 0 || progress.getProgressPercent() > 100) {
+//             throw new IllegalArgumentException("Progress percent must be between 0 and 100");
+//         }
+
+//         if ("COMPLETED".equalsIgnoreCase(progress.getStatus()) && progress.getProgressPercent() != 100) {
+//             progress.setProgressPercent(100);
+//         }
+
+//         Optional<Progress> existingProgress = progressRepository.findByUserIdAndMicroLessonId(userId, lessonId);
+
+//         List<String> allowedStatus = List.of("NOT_STARTED", "IN_PROGRESS", "COMPLETED");
+//         if (!allowedStatus.contains(progress.getStatus().toUpperCase())) {
+//             throw new IllegalArgumentException("Invalid progress status");
+//         }
+//         Progress toSave;
+//         if (existingProgress.isPresent()) {
+//             toSave = existingProgress.get();
+//             toSave.setProgressPercent(progress.getProgressPercent());
+//             toSave.setStatus(progress.getStatus());
+//             toSave.setScore(progress.getScore());
+//             toSave.setLastAccessedAt(LocalDateTime.now());
+//         } else {
+//             toSave = Progress.builder()
+//                     .user(user)
+//                     .microLesson(lesson)
+//                     .status(progress.getStatus())
+//                     .progressPercent(progress.getProgressPercent())
+//                     .score(progress.getScore())
+//                     .lastAccessedAt(LocalDateTime.now())
+//                     .build();
+//         }
+//         return progressRepository.save(toSave);
+//     }
+
+//     @Override
+//     public Progress getProgress(Long userId, Long lessonId) {
+//         return progressRepository.findByUserIdAndMicroLessonId(userId, lessonId)
+//                 .orElseThrow(() -> new ResourceNotFoundException(
+//                         "Progress not found for userId: " + userId + " and lessonId: " + lessonId));
+//     }
+
+//     @Override
+//     public List<Progress> getUserProgress(Long userId) {
+//         return progressRepository.findByUserIdOrderByLastAccessedAtDesc(userId);
+//     }
+
+// }
+
+
+
+
+
 package com.example.demo.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.MicroLesson;
-import com.example.demo.entity.Progress;
-import com.example.demo.entity.User;
-import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.MicroLesson;
+import com.example.demo.model.Progress;
+import com.example.demo.model.User;
 import com.example.demo.repository.MicroLessonRepository;
 import com.example.demo.repository.ProgressRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ProgressService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -25,8 +115,9 @@ public class ProgressServiceImpl implements ProgressService {
     private final UserRepository userRepository;
     private final MicroLessonRepository microLessonRepository;
 
-    public ProgressServiceImpl(ProgressRepository progressRepository, UserRepository userRepository,
-            MicroLessonRepository microLessonRepository) {
+    public ProgressServiceImpl(ProgressRepository progressRepository,
+                               UserRepository userRepository,
+                               MicroLessonRepository microLessonRepository) {
         this.progressRepository = progressRepository;
         this.userRepository = userRepository;
         this.microLessonRepository = microLessonRepository;
@@ -35,55 +126,34 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     public Progress recordProgress(Long userId, Long lessonId, Progress progress) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id:" + userId));
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         MicroLesson lesson = microLessonRepository.findById(lessonId)
-                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found with id:" + lessonId));
+                .orElseThrow(() -> new RuntimeException("Lesson not found"));
 
-        if (progress.getProgressPercent() < 0 || progress.getProgressPercent() > 100) {
-            throw new IllegalArgumentException("Progress percent must be between 0 and 100");
-        }
+        Progress existing = progressRepository
+                .findByUserIdAndMicroLessonId(userId, lessonId)
+                .orElse(null);
 
-        if ("COMPLETED".equalsIgnoreCase(progress.getStatus()) && progress.getProgressPercent() != 100) {
-            progress.setProgressPercent(100);
-        }
+        Progress target = (existing != null) ? existing : new Progress();
 
-        Optional<Progress> existingProgress = progressRepository.findByUserIdAndMicroLessonId(userId, lessonId);
+        target.setUser(user);
+        target.setMicroLesson(lesson);
+        target.setStatus(progress.getStatus());
+        target.setProgressPercent(progress.getProgressPercent());
+        target.setScore(progress.getScore());
+        target.setLastAccessedAt(LocalDateTime.now());
 
-        List<String> allowedStatus = List.of("NOT_STARTED", "IN_PROGRESS", "COMPLETED");
-        if (!allowedStatus.contains(progress.getStatus().toUpperCase())) {
-            throw new IllegalArgumentException("Invalid progress status");
-        }
-        Progress toSave;
-        if (existingProgress.isPresent()) {
-            toSave = existingProgress.get();
-            toSave.setProgressPercent(progress.getProgressPercent());
-            toSave.setStatus(progress.getStatus());
-            toSave.setScore(progress.getScore());
-            toSave.setLastAccessedAt(LocalDateTime.now());
-        } else {
-            toSave = Progress.builder()
-                    .user(user)
-                    .microLesson(lesson)
-                    .status(progress.getStatus())
-                    .progressPercent(progress.getProgressPercent())
-                    .score(progress.getScore())
-                    .lastAccessedAt(LocalDateTime.now())
-                    .build();
-        }
-        return progressRepository.save(toSave);
+        return progressRepository.save(target);
     }
 
     @Override
     public Progress getProgress(Long userId, Long lessonId) {
-        return progressRepository.findByUserIdAndMicroLessonId(userId, lessonId)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Progress not found for userId: " + userId + " and lessonId: " + lessonId));
+        return progressRepository.findByUserIdAndMicroLessonId(userId, lessonId).orElse(null);
     }
 
     @Override
     public List<Progress> getUserProgress(Long userId) {
         return progressRepository.findByUserIdOrderByLastAccessedAtDesc(userId);
     }
-
 }
