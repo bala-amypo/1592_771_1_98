@@ -90,12 +90,17 @@
 
 
 
+
+
 package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
+@Table(name = "micro_lessons")
 @Data
 @Builder
 @NoArgsConstructor
@@ -103,15 +108,23 @@ import lombok.*;
 public class MicroLesson {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
+
     private String title;
-    private String contentType;
-    private String difficulty;
+
     private Integer durationMinutes;
+
+    private String contentType;
+
+    private String difficulty;
+
+    @Column(length = 500)
     private String tags;
 
-    @ManyToOne
-    private Course course;
+    private LocalDate publishDate;
 }

@@ -82,9 +82,11 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "courses")
 @Data
 @Builder
 @NoArgsConstructor
@@ -92,13 +94,17 @@ import java.time.LocalDateTime;
 public class Course {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
+
     private String description;
 
-    @ManyToOne
+    private String category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "instructor_id", nullable = false)
     private User instructor;
 
     private LocalDateTime createdAt;
