@@ -20,61 +20,49 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    /* ------------------------------
-     * PASSWORD ENCODER
-     * ------------------------------ */
+    /* PASSWORD ENCODER */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /* ------------------------------
-     * SECURITY FILTER CHAIN
-     * ------------------------------ */
+    /* SECURITY FILTER CHAIN */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            /* Disable CSRF for REST APIs */
             .csrf(csrf -> csrf.disable())
-
-            /* Enable CORS */
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-            /* Stateless session (JWT based) */
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-
-            /* Authorization rules */
             .authorizeHttpRequests(auth -> auth
+
+                // PUBLIC ENDPOINTS
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 
-                /* Role-based access (future-ready) */
-                .requestMatchers("/courses/**").hasAnyRole("INSTRUCTOR", "ADMIN")
+                // 🔥 TEMP FIX – allow courses without role
+                .requestMatchers("/courses/**").permitAll()
+
+                // OTHER APIS (still role protected)
                 .requestMatchers("/recommendations/**").hasAnyRole("LEARNER", "ADMIN")
                 .requestMatchers("/progress/**").hasAnyRole("LEARNER", "ADMIN")
 
-                /* Any other request must be authenticated */
                 .anyRequest().authenticated()
             );
 
         return http.build();
     }
 
-    /* ------------------------------
-     * AUTH MANAGER
-     * ------------------------------ */
+    /* AUTH MANAGER */
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    /* ------------------------------
-     * CORS CONFIGURATION
-     * ------------------------------ */
+    /* CORS */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
