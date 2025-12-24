@@ -72,6 +72,7 @@
 
 
 
+
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.RecommendationRequest;
@@ -84,8 +85,8 @@ import com.example.demo.service.RecommendationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -105,22 +106,21 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-public Recommendation generateRecommendation(Long userId, RecommendationRequest params) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    public Recommendation generateRecommendation(Long userId, RecommendationRequest params) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    Recommendation r = Recommendation.builder()
-            .user(user)
-            .recommendedLessonIds("1,2,3")
-            .basisSnapshot("{}")
-            .confidenceScore(params != null && params.getConfidenceScore() != null 
-                    ? BigDecimal.valueOf(params.getConfidenceScore()) 
-                    : BigDecimal.ZERO)
-            .build();
+        Recommendation r = Recommendation.builder()
+                .user(user)
+                .recommendedLessonIds("1,2,3")
+                .basisSnapshot("{}")
+                .confidenceScore(params != null && params.getConfidenceScore() != null
+                        ? BigDecimal.valueOf(params.getConfidenceScore())
+                        : BigDecimal.ZERO)
+                .build();
 
-    return recommendationRepository.save(r);
-}
-
+        return recommendationRepository.save(r);
+    }
 
     @Override
     public Recommendation getLatestRecommendation(Long userId) {

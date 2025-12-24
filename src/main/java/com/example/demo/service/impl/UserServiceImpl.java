@@ -124,9 +124,12 @@ public class UserServiceImpl implements UserService {
 
         String token = jwtUtil.generateToken(claims, user.getEmail());
 
+        // ✅ Corrected Builder usage
         return AuthResponse.builder()
                 .accessToken(token)
-                .user(user)
+                .userId(user.getId())
+                .email(user.getEmail())
+                .role(user.getRole())
                 .build();
     }
 
