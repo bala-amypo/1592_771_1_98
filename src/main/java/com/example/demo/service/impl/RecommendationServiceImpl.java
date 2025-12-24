@@ -105,19 +105,22 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public Recommendation generateRecommendation(Long userId, RecommendationRequest params) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+public Recommendation generateRecommendation(Long userId, RecommendationRequest params) {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Recommendation r = Recommendation.builder()
-                .user(user)
-                .recommendedLessonIds("1,2,3")
-                .basisSnapshot("{}")
-                .confidenceScore(params != null ? params.getConfidenceScore() : null)
-                .build();
+    Recommendation r = Recommendation.builder()
+            .user(user)
+            .recommendedLessonIds("1,2,3")
+            .basisSnapshot("{}")
+            .confidenceScore(params != null && params.getConfidenceScore() != null 
+                    ? BigDecimal.valueOf(params.getConfidenceScore()) 
+                    : BigDecimal.ZERO)
+            .build();
 
-        return recommendationRepository.save(r);
-    }
+    return recommendationRepository.save(r);
+}
+
 
     @Override
     public Recommendation getLatestRecommendation(Long userId) {
