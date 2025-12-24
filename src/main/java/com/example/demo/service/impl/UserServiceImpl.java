@@ -71,7 +71,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,11 +82,11 @@ import java.util.HashMap;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
     public UserServiceImpl(UserRepository userRepository,
-                           BCryptPasswordEncoder passwordEncoder,
+                           PasswordEncoder passwordEncoder,
                            JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -124,12 +124,12 @@ public class UserServiceImpl implements UserService {
 
         String token = jwtUtil.generateToken(claims, user.getEmail());
 
-        // ✅ Corrected Builder usage
         return AuthResponse.builder()
                 .accessToken(token)
                 .userId(user.getId())
                 .email(user.getEmail())
                 .role(user.getRole())
+                .message("Login successful")
                 .build();
     }
 

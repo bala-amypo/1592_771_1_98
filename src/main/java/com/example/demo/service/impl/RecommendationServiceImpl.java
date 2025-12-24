@@ -112,8 +112,8 @@ public class RecommendationServiceImpl implements RecommendationService {
 
         Recommendation r = Recommendation.builder()
                 .user(user)
-                .recommendedLessonIds("1,2,3")
-                .basisSnapshot("{}")
+                .recommendedLessonIds("1,2,3") // placeholder
+                .basisSnapshot("{}")            // placeholder
                 .confidenceScore(params != null && params.getConfidenceScore() != null
                         ? BigDecimal.valueOf(params.getConfidenceScore())
                         : BigDecimal.ZERO)
@@ -128,7 +128,7 @@ public class RecommendationServiceImpl implements RecommendationService {
                 recommendationRepository.findByUserIdOrderByGeneratedAtDesc(userId);
 
         if (list.isEmpty()) {
-            throw new RuntimeException("No recommendations");
+            throw new RuntimeException("No recommendations found");
         }
         return list.get(0);
     }
