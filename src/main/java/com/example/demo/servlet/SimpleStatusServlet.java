@@ -22,37 +22,21 @@
 // }
 
 
+
+
 package com.example.demo.servlet;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class SimpleStatusServlet extends HttpServlet {
 
-class SimpleStatusServletTest {
-
-    private DemoServlet servlet;
-
-    @BeforeEach
-    void setUp() {
-        servlet = new DemoServlet();
-    }
-
-    @Test
-    void testDoGet() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
-
-        request.addParameter("param1", "value1");
-
-        servlet.doGet(request, response);
-
-        String result = response.getContentAsString();
-
-        assertNotNull(result);
-        assertTrue(result.contains("ExpectedContent")); // must match servlet output
-        assertEquals(200, response.getStatus());
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html");
+        resp.getWriter().write("Hello World!");
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }
