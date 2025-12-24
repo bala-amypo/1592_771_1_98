@@ -24,19 +24,14 @@
 
 package com.example.demo.servlet;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-class SimpleStatusServlet {
+class SimpleStatusServletTest {
 
     private DemoServlet servlet;
 
@@ -47,29 +42,17 @@ class SimpleStatusServlet {
 
     @Test
     void testDoGet() throws Exception {
-        // Create mock request and response
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();
 
-        // Optional: set request parameters
         request.addParameter("param1", "value1");
 
-        // Capture servlet output
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/html");
-        response.getWriter().write(""); // initialize writer
-        response.setContentLength(0);
-        
-        // Call servlet method
         servlet.doGet(request, response);
 
-        // Get output
         String result = response.getContentAsString();
 
-        // Assertions
         assertNotNull(result);
-        assertTrue(result.contains("ExpectedContent")); // replace with expected output
+        assertTrue(result.contains("ExpectedContent")); // must match servlet output
+        assertEquals(200, response.getStatus());
     }
 }
