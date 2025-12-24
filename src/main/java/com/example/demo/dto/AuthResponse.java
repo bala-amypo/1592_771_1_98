@@ -1,5 +1,9 @@
 package com.example.demo.dto;
 
+import lombok.Builder;
+
+@Builder
+
 public class AuthResponse {
 
     private String accessToken;   // IMPORTANT: tests use getAccessToken()
