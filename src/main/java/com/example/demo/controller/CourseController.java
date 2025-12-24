@@ -81,6 +81,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/courses")
 @Tag(name = "Course Management")
+
 public class CourseController {
 
     private final CourseService courseService;
