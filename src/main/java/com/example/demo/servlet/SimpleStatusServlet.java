@@ -36,7 +36,7 @@ public class SimpleStatusServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/plain");
-        resp.getWriter().write("Hello World!");
+        resp.getWriter().write("Servlet Alive");
         resp.setStatus(HttpServletResponse.SC_OK);
     }
 }
