@@ -139,9 +139,10 @@
 
 
 
-
 package com.example.demo.exception;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -153,6 +154,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -168,19 +170,39 @@ public class GlobalExceptionHandler {
     }
 
     /* ------------------------------
-     * 400 - Validation Errors
+     * 400 - Validation Errors from @RequestBody
      * ------------------------------ */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, Object> body = new HashMap<>();
         Map<String, String> errors = new HashMap<>();
 
-        // Collect all field errors
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
 
         body.put("error", "Validation failed");
+        body.put("details", errors);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    /* ------------------------------
+     * 400 - Validation Errors from Entity (JPA persist)
+     * ------------------------------ */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolation(ConstraintViolationException ex) {
+        Map<String, Object> body = new HashMap<>();
+        Map<String, String> errors = new HashMap<>();
+
+        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+        for (ConstraintViolation<?> violation : violations) {
+            String property = violation.getPropertyPath().toString();
+            String message = violation.getMessage();
+            errors.put(property, message);
+        }
+
+        body.put("error", "Validation failed during persistence");
         body.put("details", errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
