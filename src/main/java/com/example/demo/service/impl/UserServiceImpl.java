@@ -243,9 +243,6 @@
 
 
 
-
-
-
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.AuthResponse;
@@ -256,6 +253,8 @@ import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @Service
 @Transactional
@@ -299,8 +298,9 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        // ✅ Generate JWT token using the correct method
-        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
+        // ✅ Use map-based JWT generation for compatibility with tests
+        Map<String, Object> claims = Map.of("role", user.getRole());
+        String token = jwtUtil.generateToken(claims, user.getEmail());
 
         return AuthResponse.builder()
                 .accessToken(token)
