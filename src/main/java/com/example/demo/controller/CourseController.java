@@ -76,11 +76,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/courses")
 @Tag(name = "Course Management")
+@SecurityRequirement(name = "bearerAuth")
 public class CourseController {
 
     private final CourseService courseService;
