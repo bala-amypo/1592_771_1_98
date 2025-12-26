@@ -66,6 +66,7 @@ import com.example.demo.service.RecommendationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -73,6 +74,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/recommendations")
 @Tag(name = "Recommendations")
+@SecurityRequirement(name = "bearerAuth")
 public class RecommendationController {
 
     private final RecommendationService recommendationService;

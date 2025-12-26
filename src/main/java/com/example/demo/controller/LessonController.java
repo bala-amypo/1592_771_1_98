@@ -71,12 +71,14 @@ import com.example.demo.service.LessonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/lessons")
 @Tag(name = "Lesson Management")
+@SecurityRequirement(name = "bearerAuth")
 public class LessonController {
 
     private final LessonService lessonService;

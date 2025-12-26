@@ -66,12 +66,14 @@ import com.example.demo.service.ProgressService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/progress")
 @Tag(name = "Progress Tracking")
+@SecurityRequirement(name = "bearerAuth")
 public class ProgressController {
 
     private final ProgressService progressService;
