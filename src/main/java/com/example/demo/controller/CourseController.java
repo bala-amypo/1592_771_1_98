@@ -117,3 +117,4 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourse(courseId));
     }
 }
+
