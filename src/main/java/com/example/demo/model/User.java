@@ -104,6 +104,8 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
+
 public class User {
 
     @Id
@@ -117,6 +119,7 @@ public class User {
 
     private String password;
 
+    @Builder.Default
     private String role = "LEARNER";
 
     private String preferredLearningStyle;
