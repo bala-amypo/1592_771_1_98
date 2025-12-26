@@ -31,7 +31,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class User {
 
     @Id
@@ -49,7 +48,7 @@ public class User {
 
     @Column(nullable = false)
     @NotBlank(message = "Password is required")
-    // @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 6, message = "Password must be at least 6 characters") // extra validation
     private String password;
 
     @Column(nullable = false)
@@ -82,12 +81,27 @@ public class User {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        if (this.role == null) {
+
+        // Ensure role is uppercase and valid
+        if (this.role == null || this.role.isBlank()) {
             this.role = "LEARNER";
+        } else {
+            this.role = this.role.toUpperCase();
+            if (!this.role.matches("LEARNER|INSTRUCTOR|ADMIN")) {
+                this.role = "LEARNER";
+            }
+        }
+
+        // Trim email and full name
+        if (this.email != null) this.email = this.email.trim();
+        if (this.fullName != null) this.fullName = this.fullName.trim();
+
+        // Ensure preferredLearningStyle is trimmed
+        if (this.preferredLearningStyle != null) {
+            this.preferredLearningStyle = this.preferredLearningStyle.trim();
         }
     }
 }
-
 
 
 
