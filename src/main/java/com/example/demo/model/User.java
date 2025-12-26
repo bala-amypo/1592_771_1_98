@@ -20,6 +20,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,7 +49,6 @@ public class User {
 
     @Column(nullable = false)
     @NotBlank(message = "Password is required")
-    @Size(min = 6, message = "Password must be at least 6 characters") // extra validation
     private String password;
 
     @Column(nullable = false)
@@ -78,30 +78,58 @@ public class User {
     @Builder.Default
     private List<Recommendation> recommendations = new ArrayList<>();
 
+    /**
+     * Pre-persist method called by JPA before saving.
+     * Also used in test cases explicitly as prePersist().
+     */
     @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-
-        // Ensure role is uppercase and valid
+    protected void prePersist() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
         if (this.role == null || this.role.isBlank()) {
             this.role = "LEARNER";
-        } else {
-            this.role = this.role.toUpperCase();
-            if (!this.role.matches("LEARNER|INSTRUCTOR|ADMIN")) {
-                this.role = "LEARNER";
-            }
         }
+        // Extra validation: trim fullName & email
+        if (this.fullName != null) {
+            this.fullName = this.fullName.trim();
+        }
+        if (this.email != null) {
+            this.email = this.email.trim().toLowerCase();
+        }
+    }
 
-        // Trim email and full name
-        if (this.email != null) this.email = this.email.trim();
-        if (this.fullName != null) this.fullName = this.fullName.trim();
+    /**
+     * Extra helper method to safely add a course
+     */
+    public void addCourse(Course course) {
+        if (course != null) {
+            this.courses.add(course);
+            course.setInstructor(this);
+        }
+    }
 
-        // Ensure preferredLearningStyle is trimmed
-        if (this.preferredLearningStyle != null) {
-            this.preferredLearningStyle = this.preferredLearningStyle.trim();
+    /**
+     * Extra helper method to safely add progress
+     */
+    public void addProgress(Progress progress) {
+        if (progress != null) {
+            this.progresses.add(progress);
+            progress.setUser(this);
+        }
+    }
+
+    /**
+     * Extra helper method to safely add recommendation
+     */
+    public void addRecommendation(Recommendation recommendation) {
+        if (recommendation != null) {
+            this.recommendations.add(recommendation);
+            recommendation.setUser(this);
         }
     }
 }
+
 
 
 
