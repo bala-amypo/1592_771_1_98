@@ -77,3 +77,21 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 }
+
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<User> createAll(@Valid @RequestBody User user) {
+        User u = userService.register(user);
+        return ResponseEntity.status(201).body(u);
+    }
+
+    @PostMapping("/login/{email}/{password}")
+    public ResponseEntity<User> login(@PathVariable String email, @PathVariable String password) {
+        User u = userService.login(email, password);
+        return ResponseEntity.status(201).body(u);
+    }
