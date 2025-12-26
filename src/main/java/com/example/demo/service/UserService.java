@@ -1,24 +1,3 @@
-// package com.example.demo.service;
-
-// import com.example.demo.entity.User;
-
-// public interface UserService {
-
-//     User register(User user);
-
-//     User login(String email, String password);
-
-//     User findById(Long id);
-
-//     User findByEmail(String email);
-
-// }
-
-
-
-
-
-
 package com.example.demo.service;
 
 import com.example.demo.dto.AuthResponse;
@@ -34,3 +13,4 @@ public interface UserService {
 
     User findByEmail(String email);
 }
+

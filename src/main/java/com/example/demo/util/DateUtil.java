@@ -1,12 +1,12 @@
-package com.example.demo.util;
+// package com.example.demo.util;
 
-import java.time.LocalDateTime;
+// import java.time.LocalDateTime;
 
-public class DateUtil {
+// public class DateUtil {
 
-    private DateUtil() {}
+//     private DateUtil() {}
 
-    public static LocalDateTime now() {
-        return LocalDateTime.now();
-    }
-}
+//     public static LocalDateTime now() {
+//         return LocalDateTime.now();
+//     }
+// }
