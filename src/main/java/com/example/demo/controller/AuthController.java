@@ -122,6 +122,6 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         AuthResponse response =
                 userService.login(request.getEmail(), request.getPassword());
-        return ResponseEntity.ok(response);
+        return Res                                     ponseEntity.ok(response);
     }
 }
