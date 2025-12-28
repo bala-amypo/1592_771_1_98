@@ -120,8 +120,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        AuthResponse response =
-                userService.login(request.getEmail(), request.getPassword());
-        return Res                                     ponseEntity.ok(response);
+        AuthResponse response =userService.login(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(response);
     }
 }
